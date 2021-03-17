@@ -1,5 +1,6 @@
 package Main;
 
+import Task.TaskQueue;
 import Timer.Timer;
 import Thread.ThreadPool;
 import Thread.Reactor;
@@ -17,14 +18,16 @@ public class Server {
 
     private void init() {
         timer = new Timer();
-        reactor = new Reactor();
-        threadPool = new ThreadPool(4);
+        taskQueue = new TaskQueue();
+        reactor = new Reactor(timer, taskQueue);
+        threadPool = new ThreadPool(4, timer, taskQueue);
     }
 
     private void start() {
         System.out.println("============================================");
         System.out.println("========Shoot Http Server is Running========");
         System.out.println("============================================");
+        reactor.run();
     }
 
     public static void main(String[] args) {
@@ -35,6 +38,7 @@ public class Server {
 
     private Timer timer;
     private Reactor reactor;
+    private TaskQueue taskQueue;
     private ThreadPool threadPool;
 
 }
