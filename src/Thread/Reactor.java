@@ -32,6 +32,9 @@ public class Reactor {
     }
 
     public void run() {
+        synchronized (taskQueue) {
+            // TODO: need to complete
+        }
 
     }
 

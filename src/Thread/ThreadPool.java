@@ -2,6 +2,7 @@ package Thread;
 
 import Task.TaskQueue;
 import Timer.Timer;
+import Status.ThreadPoolStatus;
 /**
  * projectName: Shoot
  * fileName: ThreadPool
@@ -18,23 +19,26 @@ public class ThreadPool {
         this.threadNum = threadNum;
         this.taskQueue = taskQueue;
         this.timer = timer;
+        this.started = 0;
+        this.status = ThreadPoolStatus.NORMAL;
         createThread();
     }
 
     private void createThread() {
         for (int i = 0; i < threadNum; ++i) {
-            ThreadWorker threadWorker = new ThreadWorker(timer, taskQueue);
+            ThreadWorker threadWorker = new ThreadWorker(timer, taskQueue, this);
             Thread t = new Thread(threadWorker);
             t.start();
         }
     }
 
-    public boolean isShutdown() {
-        return shutdown;
+    public ThreadPoolStatus isShutdown() {
+        return status;
     }
 
+    private int started;
     private Timer timer;
-    private boolean shutdown;
     private int threadNum;
+    private ThreadPoolStatus status;
     private TaskQueue taskQueue;
 }
