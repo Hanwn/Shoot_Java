@@ -11,18 +11,31 @@ package Task;
 
 public class TaskQueue {
 
-    public void add() {
-
+    public TaskQueue() {
+        tasks = new Task();
+        tail = tasks;
+        taskNum = 0;
     }
 
-    public void front() {
-
+    public void add(Task task) {
+        tail.next = task;
+        tail = task;
+        taskNum += 1;
     }
 
-    public void delete() {
+    public Task getTask() {
+        //TODO:need to complete
+        Task ret = tasks.next;
+        tasks = tasks.next;
+        taskNum -= 1;
+        return ret;
+    }
 
+    public int getTaskNum() {
+        return taskNum;
     }
 
     private int taskNum;
     private Task tasks;
+    private Task tail;
 }
