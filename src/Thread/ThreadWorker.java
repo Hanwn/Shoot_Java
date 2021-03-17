@@ -4,6 +4,16 @@ import Task.Task;
 import Task.TaskQueue;
 import Timer.Timer;
 import Status.ThreadPoolStatus;
+
+import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
  * projectName: Shoot
  * fileName: ThreadWorker
@@ -17,6 +27,7 @@ public class ThreadWorker implements Runnable{
     private Timer timer;
     private ThreadPool threadPool;
     private TaskQueue taskQueue;
+    private final int defaultBufferSize = 8192;
 
     @Override
     public void run() {
@@ -56,7 +67,31 @@ public class ThreadWorker implements Runnable{
     }
 
     private void doRequest(Task task) {
-        System.out.println("doRequest");
+        //TODO: parse url,header,body, etc.
+        SelectionKey sk = task.getSk();
+        String requestMsg = "";
+        SocketChannel sChannel = null;
+        ByteBuffer buffer = ByteBuffer.allocate(defaultBufferSize);
+        try {
+            sChannel = (SocketChannel)sk.channel();
+            int cnt = 0;
+            while((cnt = sChannel.read(buffer)) > 0) {
+                buffer.flip();
+                requestMsg += new String(buffer.array(),0,buffer.remaining());
+                buffer.clear();
+            }
+        }catch (IOException e) {
+            try {
+                sk.cancel();
+                sChannel.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        // 解析http头和请求体，并进行发送数据，请求内容存放在requestMsg中
+        parseHeader();
+        parseBody();
+
     }
 
     private void parseHeader() {
