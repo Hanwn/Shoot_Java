@@ -1,5 +1,7 @@
 package Thread;
 
+import Task.TaskQueue;
+import Timer.Timer;
 /**
  * projectName: Shoot
  * fileName: ThreadWorker
@@ -10,8 +12,30 @@ package Thread;
  */
 
 public class ThreadWorker implements Runnable{
+    private Timer timer;
+    private TaskQueue taskQueue;
+
     @Override
     public void run() {
+
+    }
+
+    public ThreadWorker() {}
+
+    public ThreadWorker(Timer timer, TaskQueue taskQueue) {
+        this.timer = timer;
+        this.taskQueue = taskQueue;
+    }
+
+    private void doRequest() {
+
+    }
+
+    private void parseHeader() {
+
+    }
+
+    private void parseBody() {
 
     }
 }
