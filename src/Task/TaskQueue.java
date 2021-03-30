@@ -26,7 +26,12 @@ public class TaskQueue {
     public Task getTask() {
         //TODO:need to complete
         Task ret = tasks.next;
-        tasks = tasks.next;
+        if (ret == tail) {
+            tail = tasks;
+        }else if (ret == null) {
+            return null;
+        }
+        tasks.next = ret.next;
         taskNum -= 1;
         return ret;
     }

@@ -13,6 +13,16 @@ import java.nio.channels.SelectionKey;
 
 public class Task {
 
+    public Task() {}
+
+    public Task(SelectionKey sk) {
+        this.sk = sk;
+        next = null;
+    }
+
+    public SelectionKey getSk() {
+        return sk;
+    }
 
     private SelectionKey sk;
     public Task next;

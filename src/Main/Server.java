@@ -27,7 +27,11 @@ public class Server {
         System.out.println("============================================");
         System.out.println("========Shoot Http Server is Running========");
         System.out.println("============================================");
-        reactor.run();
+        try {
+            reactor.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

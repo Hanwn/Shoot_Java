@@ -12,6 +12,20 @@ import java.nio.channels.SelectionKey;
  */
 
 public class ConnectNode {
+    public ConnectNode() {}
+
+    public ConnectNode(SelectionKey sk) {
+        this.sk = sk;
+        deleted = false;
+    }
+
+    public void setDeleted(boolean flag) {
+        deleted = flag;
+    }
+
+    public SelectionKey getSk() {
+        return sk;
+    }
 
     private SelectionKey sk;
     private boolean deleted;

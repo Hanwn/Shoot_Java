@@ -69,26 +69,40 @@ public class ThreadWorker implements Runnable{
     private void doRequest(Task task) {
         //TODO: parse url,header,body, etc.
         SelectionKey sk = task.getSk();
+        if (sk == null) {
+            System.out.println("null");
+        }
         String requestMsg = "";
-        SocketChannel sChannel = null;
-        ByteBuffer buffer = ByteBuffer.allocate(defaultBufferSize);
+        SocketChannel sChannel = (SocketChannel)sk.channel();
         try {
-            sChannel = (SocketChannel)sk.channel();
+            ByteBuffer buffer = ByteBuffer.allocate(defaultBufferSize);
             int cnt = 0;
             while((cnt = sChannel.read(buffer)) > 0) {
                 buffer.flip();
-                requestMsg += new String(buffer.array(),0,buffer.remaining());
+                requestMsg += new String(buffer.array(),0,buffer.limit());
                 buffer.clear();
             }
         }catch (IOException e) {
-            try {
-                sk.cancel();
-                sChannel.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            e.printStackTrace();
         }
-        // 解析http头和请求体，并进行发送数据，请求内容存放在requestMsg中
+        String test = "HTTP/1.0 200 OK\r\n"
+                + "Connection: close\r\n"
+                + "Content-Type: text/html\r\n"
+                + "\r\n"
+                + "<!DOCTYPE html>"
+                + "<html>"
+                + "<head><title>ShootServer</title></head>"
+                + "<body><h1>Welcome to ShootServer</h1><p>This is the test page of Shoot.</p></body>"
+                + "</html>";
+        ByteBuffer buffer = ByteBuffer.wrap(test.getBytes());
+        try {
+            sk.cancel();
+            sChannel.write(buffer);
+            sChannel.close();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
         parseHeader();
         parseBody();
 

@@ -12,5 +12,27 @@ import Task.ConnectNode;
  */
 
 public class Heap {
-    ConnectNode[] connectNodes;
+
+    public Heap() {}
+
+    public Heap(int heapSize) {
+        this.heapSize = heapSize;
+        connectNodes = new ConnectNode[1024];
+    }
+
+    public void update() {
+
+    }
+
+    public void up() {
+
+    }
+
+    public void down() {
+
+    }
+
+
+    private int heapSize;
+    private ConnectNode[] connectNodes;
 }

@@ -13,6 +13,10 @@ import Heap.Heap;
 
 public class Timer {
 
+    public Timer() {
+        heap = new Heap(1024);
+    }
+
     public void update() {
 
     }
@@ -23,6 +27,10 @@ public class Timer {
 
     public void handleTimeOut() {
 
+    }
+
+    public Heap getHeap() {
+        return heap;
     }
 
     private Heap heap;
